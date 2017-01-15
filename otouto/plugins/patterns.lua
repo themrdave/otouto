@@ -24,7 +24,7 @@ function patterns:action(msg)
     if not msg.reply_to_message then return true end
     local output = msg.reply_to_message.text
     if msg.reply_to_message.from.id == self.info.id then
-        output = output:match('^Did you mean:\n"(.+)"$') or output
+        output = output:match('\n"(.+)"$') or output
     end
     local m1, m2 = msg.text:match('^/?s/(.-)/(.-)/?$')
     if not m2 then return true end
@@ -38,7 +38,7 @@ function patterns:action(msg)
         utilities.send_reply(msg, 'Malformed pattern!')
     else
         output = utilities.trim(output:sub(1, 4000))
-        output = '<b>Did you mean:</b>\n"' .. utilities.html_escape(output) .. '"'
+        output = '\n"' .. utilities.html_escape(output) .. '"'
         utilities.send_reply(msg.reply_to_message, output, 'html')
     end
 end
